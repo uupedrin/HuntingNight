@@ -3,14 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CinemachineTarget
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
+  - Enemy
+  - Weapons
   - 
   - 
   - 
@@ -34,9 +38,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - Player > Trigger
   m_SortingLayers:
   - name: Default
     uniqueID: 0

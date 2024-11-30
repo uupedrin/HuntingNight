@@ -10,9 +10,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 	[SerializeField] int health;
 	[SerializeField] int maxHealth;
 
-	public event Action<int> OnArmorValueChange;
-	public event Action<int> OnHealthValueChange;
 	public event Action OnPlayerDeath;
+	
+	private void Start()
+	{
+		
+		StartCoroutine(LateStart());
+	}
+	
+	IEnumerator LateStart()
+	{
+		yield return new WaitForEndOfFrame();
+		GameManager.instance.uIManager.SetHealthText(health);
+		GameManager.instance.uIManager.SetArmorText(armor);
+	}
 	
 	public void TakeDamage(int amount)
 	{
@@ -22,25 +33,31 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 			int armorDmg = (int)(amount * .8f);
 			armor -= armorDmg;
 			if(armor < 0) armor = 0;
-			OnArmorValueChange?.Invoke(armor);
+			GameManager.instance.uIManager.SetArmorText(armor);
 
 			healthDmg = (int)(amount * .2f);
 		}
 		health -= healthDmg;
 			if(health <= 0) OnPlayerDeath?.Invoke();
-			else OnHealthValueChange?.Invoke(health);
+			else GameManager.instance.uIManager.SetHealthText(health);
 	}
 	public void GetArmor(int amount)
 	{
 		armor += amount;
 		if(armor > maxArmor) armor = maxArmor;
-		OnArmorValueChange(armor);
+		GameManager.instance.uIManager.SetArmorText(armor);
+	}
+	
+	public void GetSuperArmor()
+	{
+		armor = 200;
+		GameManager.instance.uIManager.SetArmorText(armor);
 	}
 	
 	public void GetHealth(int amount)
 	{
 		health += amount;
 		if(health > maxHealth) health = maxHealth;
-		OnHealthValueChange(health);
+		GameManager.instance.uIManager.SetHealthText(health);
 	}
 }
